@@ -310,25 +310,21 @@ export default class AttachesTool {
   onUpload(response) {
     const body = response;
 
-    try {
-      if (body.success && body.file !== undefined && !isEmpty(body.file)) {
-        this.data = {
-          file: body.file,
-          title: body.file.title || '',
-        };
+    if (body.success && body.file !== undefined && !isEmpty(body.file)) {
+      this.data = {
+        file: body.file,
+        title: body.file.title || '',
+      };
 
-        this.nodes.button.remove();
-        this.showFileData();
+      this.nodes.button.remove();
+      this.showFileData();
 
-        moveCaretToTheEnd(this.nodes.title);
+      moveCaretToTheEnd(this.nodes.title);
 
-        this.removeLoader();
-      } else {
-        this.uploadingFailed(this.config.errorMessage);
-      }
-    } catch (error) {
-      console.error('Attaches tool error:', error);
-      this.uploadingFailed(this.config.errorMessage);
+      this.removeLoader();
+    } else {
+      console.error('Attaches tool error:', body);
+      this.uploadingFailed(body || this.config.errorMessage);
     }
 
     /**
